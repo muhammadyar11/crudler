@@ -8,7 +8,7 @@ const ModuleModifyScreen = () => {
     <Screen>
 
 
-      <Text>Add</Text>
+      <Text></Text>
 
 
 

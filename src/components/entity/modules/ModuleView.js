@@ -4,7 +4,7 @@ import { Button, ButtonTray } from "../../UI/Button";
 import Icons from '../../UI/Icons.js';
 
 const ModuleView = ({ module, onDelete }) => {
-  const handleDelete = () => onDelete(module);
+const handleDelete = () => onDelete(module);
 
   const requestDelete = () => 
     Alert.alert(
