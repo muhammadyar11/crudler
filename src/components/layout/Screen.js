@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
 
-const Screen = ({children}) => {
+export const Screen = ({children}) => {
   //Initialisation -----
   return (
     <View style={styles.screen}>
@@ -13,6 +13,7 @@ const Screen = ({children}) => {
 
 const styles = StyleSheet.create({
   screen: {
+    padding: 15,
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
