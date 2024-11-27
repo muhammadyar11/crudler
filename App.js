@@ -1,3 +1,4 @@
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ModuleListScreen from './src/components/screens/ModuleListScreen';
@@ -7,8 +8,7 @@ import ModuleModifyScreen from './src/components/screens/ModuleModifyScreen';
 
 const Stack = createNativeStackNavigator();
 
-export const App = () => {
-  // Initialisation -----
+const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
@@ -26,17 +26,17 @@ export const App = () => {
         <Stack.Screen
           name='ModuleAddScreen'
           component={ModuleAddScreen}
-          options={{ title: 'Add module' }}
+          options={{ title: 'Add Module' }}
         />
         <Stack.Screen
           name='ModuleViewScreen'
           component={ModuleViewScreen}
-          options={{ title: 'View module' }}
+          options={({ route }) => ({ title: `View: ${route.params?.moduleName || 'Module'}` })}
         />
         <Stack.Screen
           name='ModuleModifyScreen'
           component={ModuleModifyScreen}
-          options={{ title: 'Modify module' }}
+          options={{ title: 'Modify Module' }}
         />
       </Stack.Navigator>
     </NavigationContainer>
