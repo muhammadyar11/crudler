@@ -1,44 +1,34 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import ModuleListScreen from './src/components/screens/ModuleListScreen';
-import ModuleAddScreen from './src/components/screens/ModuleAddScreen'; 
-import ModuleViewScreen from './src/components/screens/ModuleViewScreen';
-import ModuleModifyScreen from './src/components/screens/ModuleModifyScreen';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+//import ModuleStack from './src/navigators/ModuleStack';
+import ModuleStack from './src/components/navigators/ModuleStack';
+import UserStack from './src/components/navigators/UserStack';
+//import UserStack from './src/navigators/UserStack';
 
-const Stack = createNativeStackNavigator();
+const Drawer = createDrawerNavigator();
 
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName='ModuleListScreen'
+      <Drawer.Navigator
+        initialRouteName="Modules"
         screenOptions={{
-          headerStyle: { backgroundColor: 'black' },
-          headerTintColor: 'white',
+          headerStyle: { backgroundColor: '#6200ee' },
+          headerTintColor: '#fff',
         }}
       >
-        <Stack.Screen
-          name='ModuleListScreen'
-          component={ModuleListScreen}
-          options={{ title: 'List Modules' }}
+        <Drawer.Screen
+          name="Modules"
+          component={ModuleStack}
+          options={{ title: 'Manage Modules' }}
         />
-        <Stack.Screen
-          name='ModuleAddScreen'
-          component={ModuleAddScreen}
-          options={{ title: 'Add Module' }}
+        <Drawer.Screen
+          name="Users"
+          component={UserStack}
+          options={{ title: 'Manage Users' }}
         />
-        <Stack.Screen
-          name='ModuleViewScreen'
-          component={ModuleViewScreen}
-          options={({ route }) => ({ title: `View: ${route.params?.moduleName || 'Module'}` })}
-        />
-        <Stack.Screen
-          name='ModuleModifyScreen'
-          component={ModuleModifyScreen}
-          options={{ title: 'Modify Module' }}
-        />
-      </Stack.Navigator>
+      </Drawer.Navigator>
     </NavigationContainer>
   );
 };

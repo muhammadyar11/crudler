@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, Vibration,View } from "react-native";
 
 export const Button = ({ label, onClick, styleLabel, styleButton, icon }) => {
   return (
