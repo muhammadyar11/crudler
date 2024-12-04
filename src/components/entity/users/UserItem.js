@@ -6,7 +6,7 @@ return(
     <Pressable  onPress= {() =>onSelect(user)} >
     <View style={styles.item}>
       <Text Style={styles.text}>
-        {user.UserCode} {user.UserName}
+        {user.UserID} {user.UserFirstname}
 
       </Text>
    </View>

@@ -1,5 +1,5 @@
 import { KeyboardAvoidingView, ScrollView, StyleSheet, Text,TextInput, View } from "react-native";
-import { Picker } from "@react-native-picker/picker";
+import { SelectList } from "react-native-dropdown-select-list";
 import Icons from './Icons.js';
 import{ Button, ButtonTray } from './Button.js';
 
@@ -44,28 +44,32 @@ const InputSelect = ({label,prompt, options, value,onChange }) => {
     //State........
     //Handlers......
     //View.........
+   const selectListData = options.map((option) => ({
+     Key: option.value,
+     value: option.label,
+    }));
 
    return (
         <View style={styles.item}>
           <Text style={styles.itemLabel}>{label}</Text>
-          <Picker
-            mode="dropdown"
-            selectedValue={value}
-            onValueChange={onChange}
-            style={styles.itemPickerStyle}
-        >
-            
-          < Picker.Item value={null} label={prompt} style={styles.itemPickerStyle}/>
-            {  
-             options.map( (option, index) => <Picker.Item Key={index} value={option.value} label={option.label}/>)
-            }
+          <SelectList
+            setSelected={onChange}
 
-          </Picker>
-        </View>
+            data={selectListData}
 
-  
-    );
+            placeholder={prompt}
+
+            defaultOption={selectListData.find((item) => item.key === value)}
+
+            boxStyles={styles.selectListBoxStyle}
+
+            dropdownStyles={styles.selectListDropdownStyle}
+          />  
+       </View>
+          
+);
 };
+
 
 //Compose component.....
 Form.InputText = InputText;
@@ -77,30 +81,20 @@ const styles = StyleSheet.create({
         gap:10,
     },
 
-    formItems:{
-        gap:5,
-    },
-    itemLabel: {
-        color: 'grey',
-        fontSize: 16,
-        marginBottom: 5,
-    },
-    itemTextInput: {
-      height : 50,
-      paddingLeft: 10,
-      fontSize: 16,
-      backgroundColor: 'white',
-      borderRadius: 7 ,
-      borderWidth: 1,
-      borderColor:'lightgray',
-    },
-    itemPickerStyle: {
-        height: 50,
-        backgroundClolor: 'whitesmoke',
-    },
-    itemPickerPromptStyle: {
-        color: 'gray',
-    },
+  selectListBoxStyle: {
+    height: 50,
+    backgroundColor: "Whitwsmoke",
+    borderRadius: 7,
+    borderWidth: 1,
+    bordereColor:"lightgrey",
+    paddingLeft: 10,
+    paddingTop: 15,
+  },
+  selectListDropdownStylee: {
+    borderColor: "lightgrey",
+  },
+
+
 });
 
 export default Form;
