@@ -1,4 +1,4 @@
-import { ActivityIndicator,Alert, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator,Alert, StyleSheet, Text,LogBox, View } from 'react-native';
 import useLoad from '../API/useLoad.js';
 import Screen from '../layout/Screen';
 //import ignoreWarnings from '../../utils/ignoreWarnings';
@@ -7,67 +7,109 @@ import Icons from '../UI/Icons.js';
 import{ Button, ButtonTray } from '../UI/Button.js';
 import UserList from '../entity/users/UserList.js';
 import API from '../API/API.js';
-
-const UserListScreen = ({ navigation }) => {
-  // Initialize the component
-  const usersEndpoint ='https://softwarehub.uk/unibase/api/users';
-  //state....................
-  const [users, isLoading, loadUsers] = useLoad(usersEndpoint);
-
- 
-  //loadModules(modulesEndpoint);
-   //handler........
-  const onAdd = async (user) =>{
-    const result = await API.post(usersEndpoint, user);
-    if( result.isSuccess) {
-       loadUsers(usersEndpoint)
-       navigation.goBack(); 
-    } else Alert.alert(result.message);
-
-  }
-    
-  const onModify = async(user) => {
-    const putEndpoint = `${usersEndpoint}/${user.UserID}`;
-    const result = await API.put(putEndpoint, user);
-    if (result.isSuccess) {
-      loadUsers(usersEndpoint);
-      navigation.navigate('UserViewScreen',{user,onDelete,onModify});
-      }  else Alert.alert(result.message);
-    
-};
-  const onDelete = async(user) => { 
-    //console.log(`Module ${module.ModuleCode} deleted`);
-    const deleteEndpoint = `${usersEndpoint}/${user.UserID}`;
-    const result = await API.delete(deleteEndpoint, user);
-    if( result.isSuccess) {
-      loadUsers(usersEndpoint)
-      navigation.goBack(); 
-    } else Alert.alert(result.message);
-
-  }
- 
-  const gotoAddScreen = () => navigation.navigate('UserAddScreen', { onAdd }) ;
-  const gotoViewScreen = (user) =>
-     navigation.navigate('UserViewScreen', { user , onDelete, onModify  }); 
   
-  //View............
+  export const UserListScreen = ({ navigation }) => {
+     ///////Initial ----
+    LogBox.ignoreLogs([
+      "Non-serializable values were found in the navigation state",
+    ]);
+    const usersEndpoint = "https://softwarehub.uk/unibase/api/users";
+  
+    // Staate ------------
+    const [users, , isLoading, loadUsers] = useLoad(usersEndpoint);
+  
+    // Handlers ----------------
+    const onDelete = async (user) => {
+      try {
+        const deleteEndpoint = `${usersEndpoint}/${user.UserID}`;
+        const result = await API.delete(deleteEndpoint, user);
+        if (result.isSuccess) {
+          loadUsers(usersEndpoint);
+          navigation.goBack();
+        } else {
+          Alert.alert("Error", result.message || "Failed to delete user");
+        }
+      } catch (error) {
+        Alert.alert("Error", "An unexpected error occurred");
+        console.error(error);
+      }
+    };
+  
+    const onModify = async (user) => {
+      try {
+        const putEndpoint = `${usersEndpoint}/${user.UserID}`;
+        const result = await API.put(putEndpoint, user);
+        if (result.isSuccess) {
+          loadUsers(usersEndpoint);
+          navigation.navigate("UserViewScreen", { user, onDelete, onModify });
+        } else {
+          Alert.alert("Error", result.message || "Failed to modify user");
+        }
+      } catch (error) {
+        Alert.alert("Error", "An unexpected error occurred");
+        console.error(error);
+      }
+    };
+  
+    const onAdd = async (user) => {
+      try {
+        const result = await API.post(usersEndpoint, user);
+        if (result.isSuccess) {
+          loadUsers(usersEndpoint);
+          navigation.goBack();
+        } else {
+          Alert.alert("Error", result.message || "Failed to add user");
+        }
+      } catch (error) {
+        Alert.alert("Error", "An unexpected error occurred");
+        console.error(error);
+      }
+    };
+  
+    const goToAddScreen = () => navigation.navigate("UserAddScreen", { onAdd });
 
-  return (
-    <Screen>
-      <ButtonTray>
-        <Button label ='Add User' icon={<Icons.Add />} onClick ={gotoAddScreen} />
-      </ButtonTray>
-      {isLoading &&  (
-        <View style={styles.spinner}>
-           <Text>Retrieving records from {usersEndpoint}...</Text>
-           <ActivityIndicator size='large' />
-       </View>
-      )}
-      <UserList users={users} onSelect={gotoViewScreen} />
-    </Screen>
-  );
-};
-
-const styles = StyleSheet.create({});
-
-export default UserListScreen;
+    const goToViewScreen = (user) =>
+      navigation.navigate("UserViewScreen", { user, onDelete, onModify });
+  
+  
+    // View ------------------------------------
+    return (
+      <Screen>
+        <ButtonTray>
+          <Button
+            icon={<Icons.Add />}
+            label="Add"
+            onClick={goToAddScreen}
+          />
+        </ButtonTray>
+        {isLoading && (
+          <View style={styles.loading}>
+            <Text>Retrieving records from {usersEndpoint}...</Text>
+            <ActivityIndicator size="large" />
+          </View>
+        )}
+        {!isLoading && users.length === 0 && (
+          <View style={styles.loading}>
+            <Text>No users found.</Text>
+          </View>
+        )}
+        {!isLoading && users.length > 0 && (
+          <UserList users={users} onSelect={goToViewScreen} />
+        )}
+      </Screen>
+    );
+  };
+  
+  const styles = StyleSheet.create({
+    padding: {
+      padding: 20,
+    },
+    loading: {
+      height: 99,
+      gap: 20,
+      justifyContent: "center",
+      alignItems: "center",
+    },
+  });
+  
+  export default UserListScreen;

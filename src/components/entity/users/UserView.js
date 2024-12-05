@@ -18,14 +18,10 @@ const handleDelete = () => onDelete(user);
     <View style={styles.container}>
       <FullWidthImage source={{ uri: user.UserImageURL }} style={styles.image} />
       <View style={styles.infoTray}>
-        <Text style={styles.boldText}> 
-          {user.UserCode} {user.UserName}
-        </Text>
-        <Text style={styles.text}>Level {user.UserLevel}</Text>
+        <Text style={styles.text}>{user.UserFirstname} {user.UserLastname}</Text>
+        <Text style={styles.text}>level {user.UserLevel}</Text>
         <Text style={styles.text}>Cohort {user.UserYearName}</Text> 
-        <Text style={styles.text}>
-          {user.UserLeaderName} <Text style={styles.dimText}>(Module Leader)</Text>
-        </Text>
+      
       </View>
       <ButtonTray>
         <Button icon={<Icons.Edit />} label='Modify' onClick={onModify} />
