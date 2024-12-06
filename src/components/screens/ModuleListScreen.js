@@ -18,6 +18,7 @@ const ModuleListScreen = ({ navigation }) => {
   //loadModules(modulesEndpoint);
    //handler........
   const onAdd = async (module) =>{
+    console.log(module)
     const result = await API.post(modulesEndpoint, module);
     if( result.isSuccess) {
        loadModules(modulesEndpoint)

@@ -1,5 +1,6 @@
 import { KeyboardAvoidingView, ScrollView, StyleSheet, Text,TextInput, View } from "react-native";
 import { SelectList } from "react-native-dropdown-select-list";
+import RNPickerSelect from 'react-native-picker-select'
 import Icons from './Icons.js';
 import{ Button, ButtonTray } from './Button.js';
 
@@ -44,16 +45,17 @@ const InputSelect = ({label,prompt, options, value,onChange }) => {
     //State........
     //Handlers......
     //View.........
-   const selectListData = options.map((option) => ({
-     Key: option.value,
-     value: option.label,
-    }));
+  //  const selectListData = options.map((option) => ({
+  //    Key: option.value,
+  //    value: option.label,
+  //   }));
 
    return (
         <View style={styles.item}>
           <Text style={styles.itemLabel}>{label}</Text>
-          <SelectList
+          {/* <SelectList
             setSelected={onChange}
+            on
 
             data={selectListData}
 
@@ -64,7 +66,24 @@ const InputSelect = ({label,prompt, options, value,onChange }) => {
             boxStyles={styles.selectListBoxStyle}
 
             dropdownStyles={styles.selectListDropdownStyle}
-          />  
+          />   */}
+         <RNPickerSelect
+          mode = 'dropdown'
+          selectedValue = {value}
+          onValueChange={onChange}
+          placeholder={{label: prompt,value:null,color:'whitesmoke'}}
+          items={options.map((option)=>({label:option.label,value:option.value}))}
+          style={
+            {
+              inputIOSContainer:{pointerEvents:"none"}
+            }
+          }
+          
+
+         />
+
+
+
        </View>
           
 );

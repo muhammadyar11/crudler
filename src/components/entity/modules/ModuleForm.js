@@ -47,7 +47,7 @@ const ModuleForm = ({originalModule, onSubmit, onCancel}) => {
 
 
   const cohorts = years.map((year) => ({value: year.YearID, label: year.YearName }));
-  const staff = leaders.map((leader) => ({value: leader.UserID, LABEL: `${leader.UserFirstname} ${leader.UserLastname}`}));
+  const staff = leaders.map((leader) => ({value: leader.UserID, label: `${leader.UserFirstname} ${leader.UserLastname}`}));
 
  return (
    <Form
@@ -71,7 +71,10 @@ const ModuleForm = ({originalModule, onSubmit, onCancel}) => {
      <Form.InputSelect 
         label="Module level"
         value={module.ModuleLevel}
-        onChange={(value) => handleChange('ModuleLevel', value)}
+        onChange={(value) => {
+          console.log(value)
+          handleChange('ModuleLevel', value)
+      }}
         prompt='Select module level.....'
         options={levels}
       />
